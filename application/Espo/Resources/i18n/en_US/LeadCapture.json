@@ -1,0 +1,28 @@
+{
+    "fields": {
+        "name": "Name",
+        "campaign": "Campaign",
+        "isActive": "Is Active",
+        "SubscribeToTargetList": "Subscribe to target list",
+        "subscribeContactToTargetList": "Subscribe contact if lead exists",
+        "targetList": "Target List",
+        "fieldList": "Fields to pass",
+        "optInConfirmation": "Double opt-in",
+        "optInConfirmationEmailTemplate": "Opt-in confirmation email template",
+        "optInConfirmationLifetime": "Opt-in confirmation lifetime (hours)",
+        "formula": "Formula"
+
+    },
+    "links": {
+        "targetList": "Target List",
+        "campaign": "Campaign",
+        "optInConfirmationEmailTemplate": "Opt-in confirmation email template"
+    },
+    "labels": {
+        "Create LeadCapture": "Create Entry Point",
+    },
+    "messages": {
+    },
+    "tooltips": {
+    }
+}

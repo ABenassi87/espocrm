@@ -1,0 +1,63 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "maxLength": 100,
+            "trim": true
+        },
+        "campaign": {
+            "type": "link"
+        },
+        "isActive": {
+            "type": "bool",
+            "default": true
+        },
+        "subscribeToTargetList": {
+            "type": "bool",
+            "default": true
+        },
+        "subscribeContactToTargetList": {
+            "type": "bool",
+            "default": true
+        },
+        "targetList": {
+            "type": "link"
+        },
+        "fieldList": {
+            "type": "multiEnum",
+            "default": ["firstName", "lastName", "emailAddress"]
+        },
+        "optInConfirmation": {
+            "type": "bool"
+        },
+        "optInConfirmationEmailTemplate": {
+            "type": "link"
+        },
+        "optInConfirmationLifetime": {
+            "type": "int",
+            "default": 48
+        },
+        "formula": {
+            "type": "text",
+            "view": "views/fields/formula"
+        }
+    },
+    "links": {
+        "targetList": {
+            "type": "belongsTo",
+            "entity": "TargetList"
+        },
+        "campaign": {
+            "type": "belongsTo",
+            "entity": "Campaign"
+        },
+        "optInConfirmationEmailTemplate": {
+            "type": "belongsTo",
+            "entity": "EmailTemplate"
+        }
+    },
+    "collection": {
+        "sortBy": "name",
+        "asc": true
+    }
+}
