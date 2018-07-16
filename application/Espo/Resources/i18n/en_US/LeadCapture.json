@@ -10,8 +10,8 @@
         "optInConfirmation": "Double opt-in",
         "optInConfirmationEmailTemplate": "Opt-in confirmation email template",
         "optInConfirmationLifetime": "Opt-in confirmation lifetime (hours)",
+        "leadSource": "Lead Source",
         "formula": "Formula"
-
     },
     "links": {
         "targetList": "Target List",

@@ -37,6 +37,12 @@
             "type": "int",
             "default": 48
         },
+        "leadSource": {
+            "type": "enum",
+            "view": "crm:views/opportunity/fields/lead-source",
+            "customizationOptionsDisabled": true,
+            "default": "Web Site"
+        },
         "formula": {
             "type": "text",
             "view": "views/fields/formula"
