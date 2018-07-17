@@ -6,7 +6,7 @@
         "subscribeToTargetList": "Subscribe to Target List",
         "subscribeContactToTargetList": "Subscribe Contact if Lead exists",
         "targetList": "Target List",
-        "fieldList": "Passed Fields",
+        "fieldList": "Fields passed in payload",
         "optInConfirmation": "Double Opt-in",
         "optInConfirmationEmailTemplate": "Opt-in confirmation email template",
         "optInConfirmationLifetime": "Opt-in confirmation lifetime (hours)",
