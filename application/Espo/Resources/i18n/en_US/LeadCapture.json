@@ -3,7 +3,7 @@
         "name": "Name",
         "campaign": "Campaign",
         "isActive": "Is Active",
-        "SubscribeToTargetList": "Subscribe to target list",
+        "subscribeToTargetList": "Subscribe to target list",
         "subscribeContactToTargetList": "Subscribe contact if lead exists",
         "targetList": "Target List",
         "fieldList": "Fields to pass",
@@ -19,7 +19,7 @@
         "optInConfirmationEmailTemplate": "Opt-in confirmation email template"
     },
     "labels": {
-        "Create LeadCapture": "Create Entry Point",
+        "Create LeadCapture": "Create Entry Point"
     },
     "messages": {
     },

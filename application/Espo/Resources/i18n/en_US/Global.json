@@ -44,7 +44,8 @@
         "EmailAddress": "Email Address",
         "PhoneNumber": "Phone Number",
         "AuthLogRecord": "Auth Log Record",
-        "AuthFailLogRecord": "Auth Fail Log Record"
+        "AuthFailLogRecord": "Auth Fail Log Record",
+        "LeadCapture": "Lead Capture Entry Point"
     },
     "scopeNamesPlural": {
         "Email": "Emails",
@@ -78,7 +79,8 @@
         "UniqueId": "Unique IDs",
         "LastViewed": "Last Viewed",
         "AuthLogRecord": "Auth Log",
-        "AuthFailLogRecord": "Auth Fail Log"
+        "AuthFailLogRecord": "Auth Fail Log",
+        "LeadCapture": "Lead Capture"
     },
     "labels": {
         "Misc": "Misc",

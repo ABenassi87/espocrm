@@ -25,7 +25,9 @@
         },
         "fieldList": {
             "type": "multiEnum",
-            "default": ["firstName", "lastName", "emailAddress"]
+            "default": ["firstName", "lastName", "emailAddress"],
+            "view": "views/lead-capture/fields/field-list",
+            "required": true
         },
         "optInConfirmation": {
             "type": "bool"
@@ -35,7 +37,8 @@
         },
         "optInConfirmationLifetime": {
             "type": "int",
-            "default": 48
+            "default": 48,
+            "min": 1
         },
         "leadSource": {
             "type": "enum",
@@ -45,7 +48,7 @@
         },
         "formula": {
             "type": "text",
-            "view": "views/fields/formula"
+            "view": "views/lead-capture/fields/formula"
         }
     },
     "links": {
