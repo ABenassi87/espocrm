@@ -11,7 +11,8 @@
         "optInConfirmationEmailTemplate": "Opt-in confirmation email template",
         "optInConfirmationLifetime": "Opt-in confirmation lifetime (hours)",
         "leadSource": "Lead Source",
-        "formula": "Formula"
+        "formula": "Formula",
+        "apiKey": "API Key"
     },
     "links": {
         "targetList": "Target List",
@@ -22,6 +23,7 @@
         "Create LeadCapture": "Create Entry Point"
     },
     "messages": {
+        "generateApiKey": "Create new API Key"
     },
     "tooltips": {
     }

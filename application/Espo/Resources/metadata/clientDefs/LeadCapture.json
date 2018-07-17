@@ -74,6 +74,16 @@
                         }
                     ]
                 }
+            },
+            "apiKey": {
+                "visible": {
+                    "conditionGroup": [
+                        {
+                            "type": "isNotEmpty",
+                            "attribute": "id"
+                        }
+                    ]
+                }
             }
         }
     }

@@ -2,13 +2,14 @@
     {
         "label":"",
         "rows":[
-            [{"name":"name"}, {"name":"isActive"}],
-            [{"name":"subscribeToTargetList"}, {"name":"campaign"}],
-            [{"name":"subscribeContactToTargetList"}, {"name":"targetList"}],
-            [{"name":"optInConfirmation"}, {"name": "leadSource"}],
-            [{"name":"optInConfirmationEmailTemplate"}, {"name":"optInConfirmationLifetime"}],
+            [{"name": "name"}, {"name":"isActive"}],
+            [{"name": "subscribeToTargetList", "inlineEditDisabled": true}, {"name": "campaign"}],
+            [{"name": "subscribeContactToTargetList"}, {"name": "targetList"}],
+            [{"name": "optInConfirmation", "inlineEditDisabled": true}, {"name": "leadSource"}],
+            [{"name": "optInConfirmationEmailTemplate"}, {"name": "optInConfirmationLifetime"}],
             [{"name": "fieldList", "fullWidth": true}],
-            [{"name": "formula", "fullWidth": true}]
+            [{"name": "formula", "fullWidth": true}],
+            [{"name": "apiKey", "fullWidth": true}]
         ]
     }
 ]
