@@ -27,7 +27,19 @@
             "type": "multiEnum",
             "default": ["firstName", "lastName", "emailAddress"],
             "view": "views/lead-capture/fields/field-list",
-            "required": true
+            "required": true,
+            "ignoreFieldList": [
+                "targetList",
+                "targetLists",
+                "acceptanceStatusMeetings",
+                "acceptanceStatusCalls",
+                "campaign",
+                "source",
+                "teams",
+                "createdOpportunity",
+                "createdAccount",
+                "createdContact"
+            ]
         },
         "optInConfirmation": {
             "type": "bool"
@@ -45,10 +57,6 @@
             "view": "crm:views/opportunity/fields/lead-source",
             "customizationOptionsDisabled": true,
             "default": "Web Site"
-        },
-        "formula": {
-            "type": "text",
-            "view": "views/lead-capture/fields/formula"
         },
         "apiKey": {
             "type": "varchar",

@@ -9,7 +9,6 @@
             [{"name": "optInConfirmationEmailTemplate"}, {"name": "optInConfirmationLifetime"}],
             [{"name": "targetTeam"}, {"name": "leadSource"}],
             [{"name": "fieldList", "fullWidth": true}],
-            [{"name": "formula", "fullWidth": true}],
             [{"name": "apiKey", "fullWidth": true}]
         ]
     }
