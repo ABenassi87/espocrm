@@ -55,9 +55,36 @@
             "maxLength": 36,
             "readOnly": true,
             "view": "views/lead-capture/fields/api-key"
+        },
+        "targetTeam": {
+            "type": "link"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true
         }
     },
     "links": {
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
         "targetList": {
             "type": "belongsTo",
             "entity": "TargetList"
@@ -65,6 +92,10 @@
         "campaign": {
             "type": "belongsTo",
             "entity": "Campaign"
+        },
+        "targetTeam": {
+            "type": "belongsTo",
+            "entity": "Team"
         },
         "optInConfirmationEmailTemplate": {
             "type": "belongsTo",

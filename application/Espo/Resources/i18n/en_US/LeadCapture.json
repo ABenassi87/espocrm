@@ -12,12 +12,14 @@
         "optInConfirmationLifetime": "Opt-in confirmation lifetime (hours)",
         "leadSource": "Lead Source",
         "formula": "Formula",
-        "apiKey": "API Key"
+        "apiKey": "API Key",
+        "targetTeam": "Target Team"
     },
     "links": {
         "targetList": "Target List",
         "campaign": "Campaign",
-        "optInConfirmationEmailTemplate": "Opt-in confirmation email template"
+        "optInConfirmationEmailTemplate": "Opt-in confirmation email template",
+        "targetTeam": "Target Team"
     },
     "labels": {
         "Create LeadCapture": "Create Entry Point"
