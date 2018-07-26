@@ -1,4 +1,3 @@
-<?php
 /************************************************************************
  * This file is part of EspoCRM.
  *
@@ -27,41 +26,28 @@
  * these Appropriate Legal Notices must retain the display of the "EspoCRM" word.
  ************************************************************************/
 
-namespace Espo\Services;
+Espo.define('views/lead-capture/record/detail', 'views/record/detail', function (Dep) {
 
-use \Espo\ORM\Entity;
+    return Dep.extend({
 
-use Espo\Core\Utils\Util;
+        setupActionItems: function () {
+            Dep.prototype.setupActionItems.call(this);
 
-use \Espo\Core\Exceptions\NotFound;
+            this.dropdownItemList.push({
+                'label': 'Generate New API Key',
+                'name': 'generateNewApiKey'
+            });
+        },
 
-class LeadCapture extends Record
-{
-    protected $readOnlyAttributeList = ['apiKey'];
+        actionGenerateNewApiKey: function () {
+            this.confirm(this.translate('confirmation', 'messages'), function () {
+                this.ajaxPostRequest('LeadCapture/action/generateNewApiKey', {
+                    id: this.model.id
+                }).then(function (data) {
+                    this.model.set(data);
+                }.bind(this));
+            }.bind(this));
+        }
 
-    protected function beforeCreateEntity(Entity $entity, $data)
-    {
-        $apiKey = $this->generateApiKey();
-        $entity->set('apiKey', $apiKey);
-    }
-
-    public function generateNewApiKeyForEntity($id)
-    {
-        $entity = $this->getEntity($id);
-        if (!$entity) throw new NotFound();
-
-        $apiKey = $this->generateApiKey();
-        $entity->set('apiKey', $apiKey);
-
-        $this->getEntityManager()->saveEntity($entity);
-
-        return (object) [
-            'apiKey' => $apiKey
-        ];
-    }
-
-    public function generateApiKey()
-    {
-        return bin2hex(random_bytes(16));
-    }
-}
+    });
+});

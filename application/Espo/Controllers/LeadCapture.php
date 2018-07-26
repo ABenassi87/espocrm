@@ -30,6 +30,7 @@
 namespace Espo\Controllers;
 
 use \Espo\Core\Exceptions\Forbidden;
+use \Espo\Core\Exceptions\BadRequest;
 
 class LeadCapture extends \Espo\Core\Controllers\Record
 {
@@ -38,5 +39,12 @@ class LeadCapture extends \Espo\Core\Controllers\Record
         if (!$this->getUser()->isAdmin()) {
             throw new Forbidden();
         }
+    }
+
+    public function postActionGenerateNewApiKey($params, $data, $request)
+    {
+        if (empty($data->id)) throw new BadRequest();
+
+        return $this->getRecordService()->generateNewApiKeyForEntity($data->id);
     }
 }
