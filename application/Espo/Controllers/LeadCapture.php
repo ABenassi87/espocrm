@@ -34,11 +34,12 @@ use \Espo\Core\Exceptions\BadRequest;
 
 class LeadCapture extends \Espo\Core\Controllers\Record
 {
-    protected function checkControllerAccess()
+    public function postActionLeadCapture($params, $data, $request)
     {
-        if (!$this->getUser()->isAdmin()) {
-            throw new Forbidden();
-        }
+        return [
+            'apiKey' => $params['apiKey'],
+            'test' => '1'
+        ];
     }
 
     public function postActionGenerateNewApiKey($params, $data, $request)
