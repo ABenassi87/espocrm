@@ -36,16 +36,18 @@ class LeadCapture extends \Espo\Core\Controllers\Record
 {
     public function postActionLeadCapture($params, $data, $request)
     {
-        return [
-            'apiKey' => $params['apiKey'],
-            'test' => '1'
-        ];
+        if (empty($params['apiKey'])) throw new BadRequest('No API key provided.');
+        if (empty($data)) throw new BadRequest('No payload provided.');
+
+        return $this->getRecordService()->leadCapture($params['apiKey'], $data);
     }
 
     public function postActionGenerateNewApiKey($params, $data, $request)
     {
         if (empty($data->id)) throw new BadRequest();
 
-        return $this->getRecordService()->generateNewApiKeyForEntity($data->id);
+        $this->getRecordService()->generateNewApiKeyForEntity($data->id);
+
+        return true;
     }
 }

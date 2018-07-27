@@ -91,7 +91,7 @@ class Campaign extends \Espo\Services\Record
             'campaignId' => $entity->id,
             'action' => 'Opted Out',
             'isTest' => false
-        ))->count();
+        ))->groupBy(['parentId', 'parentType'])->count();
         $entity->set('optedOutCount', $optedOutCount);
 
         $optedOutPercentage = null;
@@ -145,6 +145,24 @@ class Campaign extends \Espo\Services\Record
                 $entity->set('revenue', $revenue);
             }
         }
+    }
+
+    public function logLeadCreated($campaignId, Entity $target, $actionDate = null, $isTest = false)
+    {
+        if (empty($actionDate)) {
+            $actionDate = date('Y-m-d H:i:s');
+        }
+        $logRecord = $this->getEntityManager()->getEntity('CampaignLogRecord');
+        $logRecord->set([
+            'campaignId' => $campaignId,
+            'actionDate' => $actionDate,
+            'parentId' => $target->id,
+            'parentType' => $target->getEntityType(),
+            'action' => 'Lead Created',
+            'isTest' => $isTest
+        ]);
+
+        $this->getEntityManager()->saveEntity($logRecord);
     }
 
     public function logSent($campaignId, $queueItemId = null, Entity $target, Entity $emailOrEmailTemplate = null, $emailAddress, $actionDate = null, $isTest = false)
