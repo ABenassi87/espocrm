@@ -147,6 +147,7 @@ class LeadCapture extends Record
 
         $duplicate = null;
         $contact = null;
+        $toRelateLead = false;
 
         if ($lead->get('emailAddress') || $lead->get('phoneNumber')) {
             $groupOr = [];
@@ -158,27 +159,28 @@ class LeadCapture extends Record
             }
 
             $duplicate = $this->getEntityManager()->getRepository('Lead')->where(['OR' => $groupOr])->findOne();
-            if ($duplicate) {
-                echo $duplicate->id;
-            }
-        }
-
-        if ($leadCapture->get('subscribeToTargetList') && $leadCapture->get('targetListId')) {
-
-            if ($contact) {
-                if ($leadCapture->get('subscribeContactToTargetList')) {
-                    $contact->addLinkMultipleId('targetLists', $leadCapture->get('targetListId'));
-                    $this->getEntityManager()->saveEntity($contact);
-                    // TODO Log Opt-in
-                }
-            } else {
-                $lead->addLinkMultipleId('targetLists', $leadCapture->get('targetListId'));
-                // TODO Log Opt-in
-            }
+            $contact = $this->getEntityManager()->getRepository('Contact')->where(['OR' => $groupOr])->findOne();
         }
 
         if ($duplicate) {
             $lead = $duplicate;
+        }
+
+        if ($leadCapture->get('subscribeToTargetList') && $leadCapture->get('targetListId')) {
+            if ($contact) {
+                if ($leadCapture->get('subscribeContactToTargetList')) {
+                    $isAlreadyOptedIn = $this->getEntityManager()->getRepository('Contact')->isRelated($contact, 'targetLists', $leadCapture->get('targetListId'));
+                    if ($campaign && !$isAlreadyOptedIn) {
+                        $this->getEntityManager()->getRepository('Contact')->relate($contact, 'targetLists', $leadCapture->get('targetListId'));
+                        $campaingService->logOptedIn($campaign->id, null, $contact);
+                    }
+                }
+            } else {
+                $isAlreadyOptedIn = $this->getEntityManager()->getRepository('Lead')->isRelated($lead, 'targetLists', $leadCapture->get('targetListId'));
+                if ($campaign && !$isAlreadyOptedIn) {
+                    $toRelateLead = true;
+                }
+            }
         }
 
         if (!$contact) {
@@ -192,6 +194,11 @@ class LeadCapture extends Record
                 if ($campaign) {
                     $campaingService->logLeadCreated($campaign->id, $lead);
                 }
+            }
+
+            if ($toRelateLead) {
+                $this->getEntityManager()->getRepository('Lead')->relate($lead, 'targetLists', $leadCapture->get('targetListId'));
+                $campaingService->logOptedIn($campaign->id, null, $lead);
             }
         }
 
