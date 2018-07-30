@@ -139,12 +139,14 @@ class Campaign extends \Espo\Services\Record
         $sth = $pdo->prepare($sql);
         $sth->execute();
 
+        $revenue = null;
         if ($row = $sth->fetch(\PDO::FETCH_ASSOC)) {
             $revenue = floatval($row['SUM:amountConverted']);
-            if ($revenue > 0) {
-                $entity->set('revenue', $revenue);
+            if (!$revenue) {
+                $revenue = null;
             }
         }
+        $entity->set('revenue', $revenue);
     }
 
     public function logLeadCreated($campaignId, Entity $target, $actionDate = null, $isTest = false)
