@@ -189,6 +189,8 @@ class LeadCapture extends Record
             }
         }
 
+        $isNew = !$duplicate && !$contact;
+
         if (!$contact) {
             if ($leadCapture->get('targetTeamId')) {
                 $lead->addLinkMultipleId('teams', $leadCapture->get('targetTeamId'));
@@ -213,6 +215,7 @@ class LeadCapture extends Record
             'targetId' => $target->id,
             'targetType' => $target->getEntityType(),
             'leadCaptureId' => $leadCapture->id,
+            'isCreated' => $isNew,
             'data' => $data
         ]);
 
@@ -224,5 +227,7 @@ class LeadCapture extends Record
 
         print_r($data);
         die;
+
+        return true;
     }
 }

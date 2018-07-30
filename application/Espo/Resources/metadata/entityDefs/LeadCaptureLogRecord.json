@@ -8,6 +8,9 @@
         "data": {
             "type": "jsonObject"
         },
+        "isCreated": {
+            "type": "bool"
+        },
         "description": {
             "type": "text"
         },
