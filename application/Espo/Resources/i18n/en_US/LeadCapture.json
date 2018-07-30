@@ -18,7 +18,8 @@
         "targetList": "Target List",
         "campaign": "Campaign",
         "optInConfirmationEmailTemplate": "Opt-in confirmation email template",
-        "targetTeam": "Target Team"
+        "targetTeam": "Target Team",
+        "logRecords": "Log"
     },
     "labels": {
         "Create LeadCapture": "Create Entry Point",

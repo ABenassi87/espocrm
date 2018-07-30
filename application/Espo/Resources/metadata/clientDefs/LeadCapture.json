@@ -89,5 +89,13 @@
                 }
             }
         }
+    },
+    "relationshipPanels": {
+        "logRecords": {
+            "rowActionsView": "views/record/row-actions/remove-only",
+            "layout": "listForLeadCapture",
+            "select": false,
+            "create": false
+        }
     }
 }

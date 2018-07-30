@@ -108,6 +108,15 @@
         "optInConfirmationEmailTemplate": {
             "type": "belongsTo",
             "entity": "EmailTemplate"
+        },
+        "targetList": {
+            "type": "belongsTo",
+            "entity": "TargetList"
+        },
+        "logRecords": {
+            "type": "hasMany",
+            "entity": "LeadCaptureLogRecord",
+            "foreign": "leadCapture"
         }
     },
     "collection": {

@@ -149,6 +149,8 @@ class LeadCapture extends Record
         $contact = null;
         $toRelateLead = false;
 
+        $target = $lead;
+
         if ($lead->get('emailAddress') || $lead->get('phoneNumber')) {
             $groupOr = [];
             if ($lead->get('emailAddress')) {
@@ -160,10 +162,14 @@ class LeadCapture extends Record
 
             $duplicate = $this->getEntityManager()->getRepository('Lead')->where(['OR' => $groupOr])->findOne();
             $contact = $this->getEntityManager()->getRepository('Contact')->where(['OR' => $groupOr])->findOne();
+            if ($contact) {
+                $target = $contact;
+            }
         }
 
         if ($duplicate) {
             $lead = $duplicate;
+            $target = $lead;
         }
 
         if ($leadCapture->get('subscribeToTargetList') && $leadCapture->get('targetListId')) {
@@ -201,6 +207,20 @@ class LeadCapture extends Record
                 $campaingService->logOptedIn($campaign->id, null, $lead);
             }
         }
+
+        $logRecord = $this->getEntityManager()->getEntity('LeadCaptureLogRecord');
+        $logRecord->set([
+            'targetId' => $target->id,
+            'targetType' => $target->getEntityType(),
+            'leadCaptureId' => $leadCapture->id,
+            'data' => $data
+        ]);
+
+        if (!empty($data->description)) {
+            $logRecord->set('description', $description);
+        }
+
+        $this->getEntityManager()->saveEntity($logRecord);
 
         print_r($data);
         die;
