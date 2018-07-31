@@ -50,6 +50,40 @@ class LeadCapture extends Record
         parent::prepareEntityForOutput($entity);
 
         $entity->set('exampleRequestMethod', 'POST');
+
+        $requestUrl = $this->getConfig()->getSiteUrl() . '/api/v1/' . $entity->get('apiKey');
+        $entity->set('exampleRequestUrl', $requestUrl);
+
+        $fieldManagerUtil = $this->getInjection('fieldManagerUtil');
+
+        $requestPayload = "```{\n";
+
+        $attributeList = [];
+
+        $attributeIgnoreList = ['emailAddressIsOptedOut'];
+
+        $fieldList = $entity->get('fieldList');
+        if (is_array($fieldList)) {
+            foreach ($fieldList as $field) {
+                foreach ($fieldManagerUtil->getActualAttributeList('Lead', $field) as $attribute) {
+                    if (!in_array($attribute, $attributeIgnoreList)) {
+                        $attributeList[] = $attribute;
+                    }
+                }
+            }
+        }
+
+        foreach ($attributeList as $i => $attribute) {
+            $requestPayload .= "    " . $attribute . ": " . strtoupper(Util::camelCaseToUnderscore($attribute));
+            if ($i < count($attributeList) - 1) {
+                $requestPayload .= ",";
+            }
+
+            $requestPayload .= "\n";
+        }
+
+        $requestPayload .= '}```';
+        $entity->set('exampleRequestPayload', $requestPayload);
     }
 
     protected function beforeCreateEntity(Entity $entity, $data)
@@ -68,9 +102,9 @@ class LeadCapture extends Record
 
         $this->getEntityManager()->saveEntity($entity);
 
-        return (object) [
-            'apiKey' => $apiKey
-        ];
+        $this->prepareEntityForOutput($entity);
+
+        return $entity;
     }
 
     public function generateApiKey()
@@ -231,9 +265,6 @@ class LeadCapture extends Record
         }
 
         $this->getEntityManager()->saveEntity($logRecord);
-
-        print_r($data);
-        die;
 
         return true;
     }

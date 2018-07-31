@@ -46,8 +46,6 @@ class LeadCapture extends \Espo\Core\Controllers\Record
     {
         if (empty($data->id)) throw new BadRequest();
 
-        $this->getRecordService()->generateNewApiKeyForEntity($data->id);
-
-        return true;
+        return $this->getRecordService()->generateNewApiKeyForEntity($data->id)->getValueMap();
     }
 }
