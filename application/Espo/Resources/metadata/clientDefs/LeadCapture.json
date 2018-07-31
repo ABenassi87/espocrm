@@ -90,6 +90,15 @@
             }
         }
     },
+    "sidePanels": {
+        "detail": [
+            {
+                "name": "request",
+                "label": "Request",
+                "view": "views/lead-capture/record/panels/request"
+            }
+        ]
+    },
     "relationshipPanels": {
         "logRecords": {
             "rowActionsView": "views/record/row-actions/remove-only",

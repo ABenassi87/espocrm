@@ -67,6 +67,21 @@
         "targetTeam": {
             "type": "link"
         },
+        "exampleRequestUrl": {
+            "type": "varchar",
+            "notStorable": true,
+            "readOnly": true
+        },
+        "exampleRequestMethod": {
+            "type": "varchar",
+            "notStorable": true,
+            "readOnly": true
+        },
+        "exampleRequestPayload": {
+            "type": "text",
+            "notStorable": true,
+            "readOnly": true
+        },
         "createdAt": {
             "type": "datetime",
             "readOnly": true

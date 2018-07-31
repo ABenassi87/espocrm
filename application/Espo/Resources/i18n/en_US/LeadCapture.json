@@ -12,7 +12,10 @@
         "optInConfirmationLifetime": "Opt-in confirmation lifetime (hours)",
         "leadSource": "Lead Source",
         "apiKey": "API Key",
-        "targetTeam": "Target Team"
+        "targetTeam": "Target Team",
+        "exampleRequestMethod": "Method",
+        "exampleRequestUrl": "URL",
+        "exampleRequestPayload": "Payload"
     },
     "links": {
         "targetList": "Target List",
@@ -23,7 +26,8 @@
     },
     "labels": {
         "Create LeadCapture": "Create Entry Point",
-        "Generate New API Key": "Generate New API Key"
+        "Generate New API Key": "Generate New API Key",
+        "Request": "Request"
     },
     "messages": {
         "generateApiKey": "Create new API Key"

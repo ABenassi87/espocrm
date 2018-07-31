@@ -45,6 +45,13 @@ class LeadCapture extends Record
         $this->addDependency('fieldManagerUtil');
     }
 
+    public function prepareEntityForOutput(Entity $entity)
+    {
+        parent::prepareEntityForOutput($entity);
+
+        $entity->set('exampleRequestMethod', 'POST');
+    }
+
     protected function beforeCreateEntity(Entity $entity, $data)
     {
         $apiKey = $this->generateApiKey();
