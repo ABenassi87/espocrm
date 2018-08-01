@@ -146,7 +146,7 @@ class LeadCapture extends Record
             $uniqueId = $this->getEntityManager()->getEntity('UniqueId');
             $uniqueId->set([
                 'terminateAt' => $terminateAt,
-                'data' => (object) {
+                'data' => (object) [
                     'leadCaptureId' => $leadCapture->id,
                     'data' => $data
                 ]
@@ -333,10 +333,12 @@ class LeadCapture extends Record
         $emailAddress = $lead->get('emailAddress');
         if (!$emailAddress) throw new Error();
 
+        $subject = $emailData['subject'];
         $body = $emailData['body'];
+        $isHtml = $emailData['isHtml'];
 
         if (mb_strpos($body, '{optInUrl}') === false && mb_strpos($body, '{optInLink}') === false) {
-            if ($emailData['isHtml']) {
+            if ($isHtml) {
                 $body .= "<p>{optInLink}</p>";
             } else {
                 $body .= "\n\n{optInUrl}";
@@ -351,9 +353,10 @@ class LeadCapture extends Record
 
         $email = $this->getEntityManager()->getEntity('Email');
         $email->set([
-            'subject' => $emailData['subject'],
+            'to' => $emailAddress,
+            'subject' => $subject,
             'body' => $body,
-            'isHtml' => $emailData['isHtml']
+            'isHtml' => $isHtml
         ]);
 
         $this->getMailSender()->send($email);
