@@ -27,7 +27,8 @@
     "labels": {
         "Create LeadCapture": "Create Entry Point",
         "Generate New API Key": "Generate New API Key",
-        "Request": "Request"
+        "Request": "Request",
+        "Confirm Opt-In": "Confirm Opt-In"
     },
     "messages": {
         "generateApiKey": "Create new API Key"

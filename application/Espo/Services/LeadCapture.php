@@ -43,6 +43,13 @@ class LeadCapture extends Record
     protected function init()
     {
         $this->addDependency('fieldManagerUtil');
+        $this->addDependency('container');
+        $this->addDependency('defaultLanguage');
+    }
+
+    protected function getMailSender()
+    {
+        return $this->getInjection('container')->get('mailSender');
     }
 
     public function prepareEntityForOutput(Entity $entity)
@@ -120,22 +127,42 @@ class LeadCapture extends Record
 
         if (!$leadCapture) throw new NotFound('Api key is not valid.');
 
-        if ($leadCapture->get('optInConfirmation') && !empty($data->emailAddress)) {
+        if ($leadCapture->get('optInConfirmation')) {
+            if (empty($data->emailAddress)) {
+                throw new Error('LeadCapture: No emailAddress passed in the payload.');
+            }
             if (!$leadCapture->get('optInConfirmationEmailTemplateId')) {
-                throw new Error('No optInConfirmationEmailTemplate specified.');
+                throw new Error('LeadCapture: No optInConfirmationEmailTemplate specified.');
             }
             $lead = $this->getLeadWithPopulatedData($leadCapture, $data);
+
+            $lifetime = $leadCapture->get('optInConfirmationLifetime');
+            if (!$lifetime) $lifetime = 100;
+
+            $dt = new \DateTime();
+            $dt->modify('+' . $lifetime . ' hours');
+            $terminateAt = $dt->format('Y-m-d H:i:s');
+
+            $uniqueId = $this->getEntityManager()->getEntity('UniqueId');
+            $uniqueId->set([
+                'terminateAt' => $terminateAt,
+                'data' => (object) {
+                    'leadCaptureId' => $leadCapture->id,
+                    'data' => $data
+                ]
+            ]);
+            $this->getEntityManager()->saveEntity($uniqueId);
 
             $job = $this->getEntityManager()->getEntity('Job');
             $job->set([
                 'serviceName' => 'LeadCapture',
                 'methodName' => 'optInConfirmationJob',
                 'data' => (object) [
-                    'leadCaptureId' => $leadCapture->id,
-                    'data' => $data
+                    'id' => $uniqueId->get('name')
                 ]
             ]);
             $this->getEntityManager()->saveEntity($job);
+
             return true;
         }
 
@@ -265,6 +292,71 @@ class LeadCapture extends Record
         }
 
         $this->getEntityManager()->saveEntity($logRecord);
+
+        return true;
+    }
+
+    public function optInConfirmationJob($jobData)
+    {
+        if (empty($jobData->id)) throw new Error();
+
+        $uniqueId = $this->getEntityManager()->getRepository('UniqueId')->where([
+            'name' => $jobData->id
+        ])->findOne();
+
+        if (!$uniqueId) throw new Error("LeadCapture: UniqueId not found.");
+
+        $uniqueIdData = $uniqueId->get('data');
+        if (empty($uniqueIdData->data)) throw new Error("LeadCapture: data not found.");
+        if (empty($uniqueIdData->leadCaptureId)) throw new Error("LeadCapture: leadCaptureId not found.");
+
+        $data = $uniqueIdData->data;
+        $leadCaptureId = $uniqueIdData->leadCaptureId;
+
+        $leadCapture = $this->getEntityManager()->getEntity('LeadCapture', $leadCaptureId);
+        if (!$leadCapture) throw new Error("LeadCapture: LeadCapture not found.");
+
+        $optInConfirmationEmailTemplateId = $leadCapture->get('optInConfirmationEmailTemplateId');
+        if (!$optInConfirmationEmailTemplateId) throw new Error("LeadCapture: No optInConfirmationEmailTemplateId.");
+
+        $emailTemplate = $this->getEntityManager()->getEntity('EmailTemplate', $optInConfirmationEmailTemplateId);
+        if (!$emailTemplate) throw new Error("LeadCapture: EmailTemplate not found.");
+
+        $lead = $this->getEntityManager()->getEntity('Lead');
+        $lead->set($data);
+
+        $emailData = $this->getServiceFactory()->create('EmailTemplate')->parseTemplate($emailTemplate, [
+            'Person' => $lead,
+            'Lead' => $lead
+        ]);
+
+        $emailAddress = $lead->get('emailAddress');
+        if (!$emailAddress) throw new Error();
+
+        $body = $emailData['body'];
+
+        if (mb_strpos($body, '{optInUrl}') === false && mb_strpos($body, '{optInLink}') === false) {
+            if ($emailData['isHtml']) {
+                $body .= "<p>{optInLink}</p>";
+            } else {
+                $body .= "\n\n{optInUrl}";
+            }
+        }
+
+        $url = $this->getConfig()->getSiteUrl() . '/?entryPoint=confirmOptIn?id=' . $uniqueId->get('name');
+        $linkHtml = '<a href='.$url.'>'.$this->getInjection()->translate('Confirm Opt-In', 'labels', 'LeadCapture').'</a>';
+
+        $body = str_replace('{optInUrl}', $url, $body);
+        $body = str_replace('{optInLink}', $linkHtml, $body);
+
+        $email = $this->getEntityManager()->getEntity('Email');
+        $email->set([
+            'subject' => $emailData['subject'],
+            'body' => $body,
+            'isHtml' => $emailData['isHtml']
+        ]);
+
+        $this->getMailSender()->send($email);
 
         return true;
     }
